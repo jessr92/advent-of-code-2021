@@ -1,4 +1,4 @@
-package com.gordonreid.adventofcode2021;
+package com.gordonreid.adventofcode2021.december01;
 
 import com.google.common.collect.ImmutableList;
 import com.gordonreid.adventofcode2021.helpers.FileHelpers;
@@ -27,7 +27,7 @@ public class December01Test {
     public void part1_given_example() {
         int expectedResult = 7;
 
-        int actualResult = December01.Part1.run(EXAMPLE_INPUT);
+        int actualResult = Part1.run(EXAMPLE_INPUT);
 
         assertEquals(expectedResult, actualResult);
     }
@@ -36,7 +36,7 @@ public class December01Test {
     public void part1_actual() {
         int expectedResult = 1655;
 
-        int actualResult = December01.Part1.run(ACTUAL_INPUT);
+        int actualResult = Part1.run(ACTUAL_INPUT);
 
         assertEquals(expectedResult, actualResult);
     }
@@ -45,7 +45,7 @@ public class December01Test {
     public void part2_given_example() {
         int expectedResult = 5;
 
-        int actualResult = December01.Part2.run(EXAMPLE_INPUT);
+        int actualResult = Part2.run(EXAMPLE_INPUT);
 
         assertEquals(expectedResult, actualResult);
     }
@@ -57,7 +57,7 @@ public class December01Test {
 
         int expectedResult = 1683;
 
-        int actualResult = December01.Part2.run(parsedInput);
+        int actualResult = Part2.run(parsedInput);
 
         assertEquals(expectedResult, actualResult);
     }
