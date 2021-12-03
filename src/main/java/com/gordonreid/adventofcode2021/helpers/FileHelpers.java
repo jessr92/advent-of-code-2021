@@ -9,7 +9,10 @@ import java.nio.file.Files;
 import java.util.List;
 import java.util.Objects;
 
-public class FileHelpers {
+public final class FileHelpers {
+
+    private FileHelpers() {
+    }
 
     public static File getFileFromResource(String filename) throws URISyntaxException {
         ClassLoader classLoader = FileHelpers.class.getClassLoader();
