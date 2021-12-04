@@ -1,13 +1,11 @@
 package com.gordonreid.adventofcode2021.december04;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public class Cell {
     private final int number;
-    private boolean picked;
-
-    public Cell(int number) {
-        this.number = number;
-        this.picked = false;
-    }
+    private boolean picked = false;
 
     public void pick() {
         picked = true;
