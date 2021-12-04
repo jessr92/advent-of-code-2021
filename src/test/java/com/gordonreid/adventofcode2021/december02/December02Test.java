@@ -1,6 +1,5 @@
 package com.gordonreid.adventofcode2021.december02;
 
-import com.google.common.collect.ImmutableList;
 import com.gordonreid.adventofcode2021.helpers.FileHelpers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -11,19 +10,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class December02Test {
 
-    private static final List<String> EXAMPLE_INPUT = ImmutableList.of(
-            "forward 5",
-            "down 5",
-            "forward 8",
-            "up 3",
-            "down 8",
-            "forward 2"
-    );
-
+    private static List<String> EXAMPLE_INPUT;
     private static List<String> ACTUAL_INPUT;
 
     @BeforeAll
     public static void setup() throws Exception {
+        EXAMPLE_INPUT = FileHelpers.getResourceLines("day-2-test-input");
         ACTUAL_INPUT = FileHelpers.getResourceLines("day-2-input");
     }
 
