@@ -1,8 +1,11 @@
 package com.gordonreid.adventofcode2021.december02;
 
+import lombok.experimental.UtilityClass;
+
 import java.util.Locale;
 
-public class MoveUtils {
+@UtilityClass
+public final class MoveUtils {
 
     enum MoveType {
         forward, down, up

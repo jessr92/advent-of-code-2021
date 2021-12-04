@@ -1,11 +1,11 @@
 package com.gordonreid.adventofcode2021.december03;
 
+import lombok.experimental.UtilityClass;
+
 import java.util.stream.IntStream;
 
+@UtilityClass
 public final class BinaryHelpers {
-
-    private BinaryHelpers() {
-    }
 
     public static int binaryToInt(String binaryString) {
         String reversedString = new StringBuffer(binaryString).reverse().toString();
