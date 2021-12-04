@@ -8,12 +8,16 @@ import java.util.List;
 public record BingoGame(List<Integer> pickedNumbers, List<BingoBoard> bingoBoards) {
 
     public static BingoGame create(List<String> input) {
-        List<Integer> pickedNumbers = Arrays.stream(input.get(0).split(",")).map(Integer::parseInt).toList();
-        List<BingoBoard> bingoBoards = getBingoBoards(input);
-        return new BingoGame(pickedNumbers, bingoBoards);
+        return new BingoGame(getPickedNumbers(input), getBingoBoards(input));
     }
 
-    private static List<BingoBoard> getBingoBoards(List<String> input) {
+    static List<Integer> getPickedNumbers(List<String> input) {
+        return Arrays.stream(input.get(0).split(","))
+                .map(Integer::parseInt)
+                .toList();
+    }
+
+    static List<BingoBoard> getBingoBoards(List<String> input) {
         List<BingoBoard> bingoBoards = new ArrayList<>();
         BingoBoard currentBoard = null;
         boolean first = true;
