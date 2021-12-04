@@ -1,6 +1,5 @@
 package com.gordonreid.adventofcode2021.december03;
 
-import com.google.common.collect.ImmutableList;
 import com.gordonreid.adventofcode2021.helpers.FileHelpers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -11,25 +10,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class December03Test {
 
-    private static final List<String> EXAMPLE_INPUT = ImmutableList.of(
-            "00100",
-            "11110",
-            "10110",
-            "10111",
-            "10101",
-            "01111",
-            "00111",
-            "11100",
-            "10000",
-            "11001",
-            "00010",
-            "01010"
-    );
-
+    private static List<String> EXAMPLE_INPUT;
     private static List<String> ACTUAL_INPUT;
 
     @BeforeAll
     public static void setup() throws Exception {
+        EXAMPLE_INPUT = FileHelpers.getResourceLines("day-3-test-input");
         ACTUAL_INPUT = FileHelpers.getResourceLines("day-3-input");
     }
 
