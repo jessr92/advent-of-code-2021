@@ -11,9 +11,7 @@ public class Part2 {
         int winningNumber = 0;
         Optional<BingoBoard> lastWinningBoard = Optional.empty();
         for (int number : bingoGame.pickedNumbers()) {
-            for (BingoBoard bingoBoard : bingoGame.bingoBoards()) {
-                bingoBoard.mark(number);
-            }
+            bingoGame.bingoBoards().forEach(bingoBoard -> bingoBoard.mark(number));
             List<BingoBoard> boardsStillToWin = bingoGame.bingoBoards().stream().filter(BingoBoard::notWon).toList();
             if (boardsStillToWin.size() == 1) {
                 lastWinningBoard = Optional.of(Iterables.getOnlyElement(boardsStillToWin));

@@ -10,9 +10,7 @@ public class Part1 {
         int winningNumber = 0;
         Optional<BingoBoard> winningBoard = Optional.empty();
         for (int number : bingoGame.pickedNumbers()) {
-            for (BingoBoard bingoBoard : bingoGame.bingoBoards()) {
-                bingoBoard.mark(number);
-            }
+            bingoGame.bingoBoards().forEach(bingoBoard -> bingoBoard.mark(number));
             winningBoard = bingoGame.bingoBoards().stream().filter(BingoBoard::hasWon).findFirst();
             if (winningBoard.isPresent()) {
                 winningNumber = number;

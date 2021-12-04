@@ -5,18 +5,18 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class Cell {
     private final int number;
-    private boolean picked = false;
+    private boolean marked = false;
 
-    public void pick() {
-        picked = true;
+    public void mark() {
+        marked = true;
     }
 
-    public boolean picked() {
-        return picked;
+    public boolean marked() {
+        return marked;
     }
 
-    public boolean notPicked() {
-        return !picked();
+    public boolean notMarked() {
+        return !marked();
     }
 
     public int getNumber() {

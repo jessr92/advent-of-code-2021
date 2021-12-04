@@ -22,6 +22,7 @@ public record BingoGame(List<Integer> pickedNumbers, List<BingoBoard> bingoBoard
         BingoBoard currentBoard = null;
         boolean first = true;
         for (String line : input) {
+            // First line contains the picked numbers, so we skip over it.
             if (first) {
                 first = false;
             } else if (line.isBlank()) {
