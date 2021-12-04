@@ -8,15 +8,7 @@ public class MoveUtils {
         forward, down, up
     }
 
-    static class Move {
-        MoveType moveType;
-        int amount;
-
-        public Move(MoveType moveType, int amount) {
-            this.moveType = moveType;
-            this.amount = amount;
-        }
-
+    record Move(MoveType moveType, int amount) {
         public static Move parse(String move) {
             String[] split = move.toLowerCase(Locale.ROOT).split(" ");
             MoveType moveType = MoveType.valueOf(split[0]);

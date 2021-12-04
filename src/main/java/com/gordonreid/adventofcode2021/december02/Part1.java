@@ -12,10 +12,10 @@ public class Part1 {
 
         public void move(String moveString) {
             Move move = Move.parse(moveString);
-            switch (move.moveType) {
-                case forward -> travelForwards(move.amount);
-                case down -> descend(move.amount);
-                case up -> ascend(move.amount);
+            switch (move.moveType()) {
+                case forward -> travelForwards(move.amount());
+                case down -> descend(move.amount());
+                case up -> ascend(move.amount());
             }
         }
 
