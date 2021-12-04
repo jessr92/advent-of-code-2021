@@ -41,16 +41,4 @@ public class BingoBoard {
     public boolean notWon() {
         return !hasWon();
     }
-
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        for (List<Cell> row : board) {
-            for (Cell cell : row) {
-                builder.append(cell.picked()).append(" ");
-            }
-            builder.append("\n");
-        }
-        return builder.toString();
-    }
-
 }
