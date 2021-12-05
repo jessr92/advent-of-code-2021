@@ -32,6 +32,11 @@ public record Grid(Cell[][] cells) {
         Stream<Integer> xStream = stream(startX, endX);
         Stream<Integer> yStream = stream(startY, endY);
         Stream<Pair> pairStream = Streams.zip(xStream, yStream, Pair::new);
+        // Handle case where vent is one cell in length. The pair stream will be infinite in length because both
+        // xStream and yStream will be infinite in size so the zip of them will be infinite in size.
+        if (startX == endX && startY == endY) {
+            pairStream = pairStream.limit(1);
+        }
         pairStream.forEach(pair -> cells[pair.y][pair.x].addVent());
     }
 
