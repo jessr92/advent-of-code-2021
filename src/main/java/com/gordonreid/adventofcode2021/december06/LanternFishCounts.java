@@ -26,10 +26,12 @@ public class LanternFishCounts {
 
     public void nextDay() {
         long newFish = lanternFishCounts.get(0).getCount();
+        // Decrement counter for all existing fish with a non-zero timer
         for (int i = 0; i < lanternFishCounts.size() - 1; i++) {
             lanternFishCounts.get(i).setCount(lanternFishCounts.get(i + 1).getCount());
         }
-        // Fish that have given birth is the same number as new fish created
+        // Fish that have given birth is the same number as new fish created. Those have a timer of 6 so we _increase_
+        // the count of that timer by the number of fish that have given birth
         lanternFishCounts.get(TIMER_AFTER_GIVING_BIRTH).increaseCount(newFish);
         lanternFishCounts.get(INITIAL_TIMER).setCount(newFish);
     }
