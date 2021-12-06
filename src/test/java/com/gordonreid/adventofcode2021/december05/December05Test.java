@@ -11,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class December05Test {
 
     private static List<String> EXAMPLE_INPUT;
-
     private static List<String> ACTUAL_INPUT;
 
     @BeforeAll
