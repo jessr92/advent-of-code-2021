@@ -9,7 +9,7 @@ public class Part2 {
 
     public static long run(List<String> input) {
         LanternFishCounts lanternFishCounts = new LanternFishCounts(input);
-        IntStream.rangeClosed(1, DAYS).forEach(i -> lanternFishCounts.nextDay());
+        IntStream.range(0, DAYS).forEach(lanternFishCounts::simulateDay);
         return lanternFishCounts.totalCount();
     }
 }
