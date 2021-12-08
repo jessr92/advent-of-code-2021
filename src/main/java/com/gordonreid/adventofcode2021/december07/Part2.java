@@ -2,12 +2,25 @@ package com.gordonreid.adventofcode2021.december07;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class Part2 {
 
     public static int run(List<String> input) {
         List<Integer> positions = Arrays.stream(input.get(0).split(",")).map(Integer::parseInt).toList();
-        return FuelCostCalculator.run(positions, Part2::fuelCostForMove);
+        double averagePosition = positions.stream().mapToDouble(a -> a).average().orElse(0.0);
+        int lowestPossibleOptimalPosition = (int) Math.floor(averagePosition);
+        int highestPossibleOptimalPosition = (int) Math.ceil(averagePosition);
+        return IntStream.rangeClosed(lowestPossibleOptimalPosition, highestPossibleOptimalPosition)
+                .map(position -> fuelToReachPosition(position, positions))
+                .min()
+                .orElse(Integer.MAX_VALUE);
+    }
+
+    private static int fuelToReachPosition(int desiredPosition, List<Integer> positions) {
+        return positions.stream()
+                .map(position -> fuelCostForMove(desiredPosition, position))
+                .reduce(0, Integer::sum);
     }
 
     private static int fuelCostForMove(int desiredPosition, int currentPosition) {
