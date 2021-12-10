@@ -1,7 +1,8 @@
 package com.gordonreid.adventofcode2021.december10;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.List;
-import java.util.Stack;
 
 public class Part1 {
 
@@ -10,12 +11,12 @@ public class Part1 {
     }
 
     private static long getScore(String line) {
-        Stack<Chunk> openChunks = new Stack<>();
+        Deque<Chunk> openChunks = new ArrayDeque<>();
         for (char character : line.toCharArray()) {
             Chunk chunk = Chunk.fromCharacter(character);
             if (character == chunk.getOpeningCharacter()) {
                 openChunks.push(chunk);
-            } else if (openChunks.empty()) {
+            } else if (openChunks.isEmpty()) {
                 throw new IllegalStateException("Stack is empty but encountered closing character " + character);
             } else {
                 Chunk chunkToClose = openChunks.pop();

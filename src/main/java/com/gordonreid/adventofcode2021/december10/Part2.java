@@ -1,9 +1,8 @@
 package com.gordonreid.adventofcode2021.december10;
 
-import com.google.common.collect.Lists;
-
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.List;
-import java.util.Stack;
 
 public class Part2 {
 
@@ -14,13 +13,13 @@ public class Part2 {
     }
 
     private static long getScore(String line) {
-        Stack<Chunk> openChunks = new Stack<>();
+        Deque<Chunk> openChunks = new ArrayDeque<>();
         boolean corrupt = false;
         for (char character : line.toCharArray()) {
             Chunk chunk = Chunk.fromCharacter(character);
             if (character == chunk.getOpeningCharacter()) {
                 openChunks.push(chunk);
-            } else if (openChunks.empty()) {
+            } else if (openChunks.isEmpty()) {
                 throw new IllegalStateException("Stack is empty but encountered closing character " + character);
             } else {
                 if (!chunk.equals(openChunks.pop())) {
@@ -29,8 +28,8 @@ public class Part2 {
                 }
             }
         }
-        if (!corrupt && !openChunks.empty()) {
-            List<Long> autocompletePoints = Lists.reverse(openChunks.stream().map(Chunk::getAutocompletePoints).toList());
+        if (!corrupt && !openChunks.isEmpty()) {
+            List<Long> autocompletePoints = openChunks.stream().map(Chunk::getAutocompletePoints).toList();
             return autocompletePoints.stream().reduce(0L, (score, points) -> (score * 5) + points);
         }
         return 0;
