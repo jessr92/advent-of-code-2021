@@ -1,7 +1,9 @@
 package com.gordonreid.adventofcode2021.december10;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+@AllArgsConstructor
 @Getter
 public enum Chunk {
     PARENTHESIS('(', 3, 1),
@@ -12,12 +14,6 @@ public enum Chunk {
     private final char openingCharacter;
     private final long mismatchPoints;
     private final long autocompletePoints;
-
-    Chunk(char openingCharacter, long mismatchPoints, long autocompletePoints) {
-        this.openingCharacter = openingCharacter;
-        this.mismatchPoints = mismatchPoints;
-        this.autocompletePoints = autocompletePoints;
-    }
 
     public static Chunk fromCharacter(Character character) {
         return switch (character) {
