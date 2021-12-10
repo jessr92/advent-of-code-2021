@@ -19,8 +19,8 @@ public class Part1 {
 
     private static int fuelToReachPosition(int desiredPosition, List<Integer> positions) {
         return positions.stream()
-                .map(position -> fuelCostForMove(desiredPosition, position))
-                .reduce(0, Integer::sum);
+                .mapToInt(position -> fuelCostForMove(desiredPosition, position))
+                .sum();
     }
 
     private static int fuelCostForMove(int desiredPosition, int currentPosition) {

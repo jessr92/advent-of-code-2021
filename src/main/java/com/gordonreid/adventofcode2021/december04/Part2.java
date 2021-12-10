@@ -21,7 +21,7 @@ public class Part2 {
             }
         }
         assert lastWinningBoard.isPresent();
-        int sumOfUnpickedNumbers = lastWinningBoard.get().unpickedNumbers().stream().reduce(0, Integer::sum);
+        int sumOfUnpickedNumbers = lastWinningBoard.get().unpickedNumbers().stream().mapToInt(a -> a).sum();
         return sumOfUnpickedNumbers * winningNumber;
     }
 }

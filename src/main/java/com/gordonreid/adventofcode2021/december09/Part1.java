@@ -6,7 +6,7 @@ public class Part1 {
 
     public static int run(List<String> input) {
         HeightMap heightMap = new HeightMap(input);
-        return heightMap.getLowestPoints().stream().reduce(0, (a, b) -> a + 1 + b);
+        return heightMap.getLowestPoints().stream().mapToInt(a -> a + 1).sum();
     }
 
 }
