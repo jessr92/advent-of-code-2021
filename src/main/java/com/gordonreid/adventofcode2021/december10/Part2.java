@@ -23,8 +23,7 @@ public class Part2 {
             } else if (openChunks.empty()) {
                 throw new IllegalStateException("Stack is empty but encountered closing character " + character);
             } else {
-                Chunk chunkToClose = openChunks.pop();
-                if (character != chunkToClose.getClosingCharacter()) {
+                if (!chunk.equals(openChunks.pop())) {
                     corrupt = true;
                     break;
                 }
