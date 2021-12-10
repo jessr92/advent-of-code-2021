@@ -14,7 +14,6 @@ public class Part2 {
 
     private static long getScore(String line) {
         Deque<Chunk> openChunks = new ArrayDeque<>();
-        boolean corrupt = false;
         for (char character : line.toCharArray()) {
             Chunk chunk = Chunk.fromCharacter(character);
             if (character == chunk.getOpeningCharacter()) {
@@ -23,15 +22,11 @@ public class Part2 {
                 throw new IllegalStateException("Stack is empty but encountered closing character " + character);
             } else {
                 if (!chunk.equals(openChunks.pop())) {
-                    corrupt = true;
-                    break;
+                    return 0;
                 }
             }
         }
-        if (!corrupt && !openChunks.isEmpty()) {
-            List<Long> autocompletePoints = openChunks.stream().map(Chunk::getAutocompletePoints).toList();
-            return autocompletePoints.stream().reduce(0L, (score, points) -> (score * 5) + points);
-        }
-        return 0;
+        List<Long> autocompletePoints = openChunks.stream().map(Chunk::getAutocompletePoints).toList();
+        return autocompletePoints.stream().reduce(0L, (score, points) -> (score * 5) + points);
     }
 }
