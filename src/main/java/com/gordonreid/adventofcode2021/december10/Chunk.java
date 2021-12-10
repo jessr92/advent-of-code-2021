@@ -4,7 +4,10 @@ import lombok.Getter;
 
 @Getter
 public enum Chunk {
-    PARENTHESIS('(', 3, 1), SQUARE_BRACKET('[', 57, 2), CURLY_BRACES('{', 1197, 3), ANGLE_BRACKET('<', 25137, 4);
+    PARENTHESIS('(', 3, 1),
+    SQUARE_BRACKET('[', 57, 2),
+    CURLY_BRACES('{', 1197, 3),
+    ANGLE_BRACKET('<', 25137, 4);
 
     private final char openingCharacter;
     private final long mismatchPoints;
