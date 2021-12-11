@@ -1,6 +1,8 @@
 package com.gordonreid.adventofcode2021.december05;
 
 import com.google.common.collect.Streams;
+import com.gordonreid.adventofcode2021.helpers.GridHelpers;
+import com.gordonreid.adventofcode2021.helpers.GridHelpers.Coordinates;
 import lombok.Getter;
 
 import java.util.Arrays;
@@ -19,9 +21,6 @@ public record Grid(Cell[][] cells) {
         public void addVent() {
             count++;
         }
-    }
-
-    private record Pair(int x, int y) {
     }
 
     public static Grid create(List<HydrothermalVent> hydrothermalVents) {
@@ -43,13 +42,13 @@ public record Grid(Cell[][] cells) {
         int endY = vent.endY();
         Stream<Integer> xStream = stream(startX, endX);
         Stream<Integer> yStream = stream(startY, endY);
-        Stream<Pair> pairStream = Streams.zip(xStream, yStream, Pair::new);
+        Stream<Coordinates> pairStream = Streams.zip(xStream, yStream, Coordinates::new);
         // Handle case where vent is one cell in length. The pair stream will be infinite in length because both
         // xStream and yStream will be infinite in size so the zip of them will be infinite in size.
         if (startX == endX && startY == endY) {
             pairStream = pairStream.limit(1);
         }
-        pairStream.forEach(pair -> cells[pair.y][pair.x].addVent());
+        pairStream.forEach(coordinates -> cells[coordinates.y()][coordinates.x()].addVent());
     }
 
     private static Stream<Integer> stream(int from, int to) {

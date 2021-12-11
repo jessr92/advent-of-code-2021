@@ -1,10 +1,9 @@
 package com.gordonreid.adventofcode2021.december11;
 
 import com.google.common.primitives.Booleans;
+import com.gordonreid.adventofcode2021.helpers.GridHelpers.Coordinates;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class Grid {
 
@@ -28,65 +27,63 @@ public class Grid {
     }
 
     public Result simulateStep() {
-        incrementEnergyLevels();
+        Deque<Coordinates> octopiToVisit = new ArrayDeque<>();
+        incrementEnergyLevels(octopiToVisit);
         boolean[][] flashed = new boolean[GRID_Y_SIZE][GRID_X_SIZE];
-        // While there has been a flash propagating through the grid, check there aren't any more flashes to propagate.
-        boolean changed;
-        do {
-            changed = false;
-            for (int y = 0; y < GRID_Y_SIZE; y++) {
-                for (int x = 0; x < GRID_X_SIZE; x++) {
-                    if (energyLevels[y][x] > 9 && !flashed[y][x]) {
-                        flashed[y][x] = true;
-                        changed = true;
-                        propagateFlash(y, x);
-                    }
-                }
+        // Octopi to visit are ready to flash. This may result in more octopi being ready to flash so we keep going
+        // until all Octopi have flashed or don't have enough energy to flash yet.
+        while (!octopiToVisit.isEmpty()) {
+            Coordinates coordinates = octopiToVisit.pop();
+            int x = coordinates.x();
+            int y = coordinates.y();
+            if (energyLevels[y][x] > 9 && !flashed[y][x]) {
+                flashed[y][x] = true;
+                propagateFlash(octopiToVisit, y, x);
             }
-        } while (changed);
+        }
         resetEnergyLevelsForFlashedOctopi(flashed);
         long flashCount = Arrays.stream(flashed).map(Booleans::asList).flatMap(Collection::stream).filter(a -> a).count();
         return new Result(flashCount, flashCount == GRID_X_SIZE * GRID_Y_SIZE);
     }
 
-    private void incrementEnergyLevels() {
+    private void incrementEnergyLevels(Deque<Coordinates> octopiToVisit) {
         for (int y = 0; y < GRID_Y_SIZE; y++) {
             for (int x = 0; x < GRID_X_SIZE; x++) {
-                incrementEnergy(x, y);
+                incrementEnergy(octopiToVisit, x, y);
             }
         }
     }
 
     private void resetEnergyLevelsForFlashedOctopi(boolean[][] flashed) {
-        // All flashed octopuses have their energy levels reset to 0
+        // All octopi that have flashed have their energy levels reset to 0
         for (int y = 0; y < GRID_Y_SIZE; y++) {
             for (int x = 0; x < GRID_X_SIZE; x++) {
-                if (flashed[y][x]) {
-                    energyLevels[y][x] = 0;
-                }
+                energyLevels[y][x] = flashed[y][x] ? 0 : energyLevels[y][x];
             }
         }
     }
 
     private boolean inBounds(int x, int y) {
-        boolean outOfBounds = y < 0 || y >= energyLevels.length || x < 0 || x >= energyLevels[y].length;
-        return !outOfBounds;
+        return y >= 0 && y < GRID_Y_SIZE && x >= 0 && x < GRID_X_SIZE;
     }
 
-    private void incrementEnergy(int x, int y) {
+    private void incrementEnergy(Deque<Coordinates> octopiToVisit, int x, int y) {
         if (inBounds(x, y)) {
             energyLevels[y][x]++;
+            if (energyLevels[y][x] > 9) {
+                octopiToVisit.add(new Coordinates(x, y));
+            }
         }
     }
 
-    private void propagateFlash(int y, int x) {
-        incrementEnergy(x - 1, y - 1);
-        incrementEnergy(x, y - 1);
-        incrementEnergy(x + 1, y - 1);
-        incrementEnergy(x - 1, y);
-        incrementEnergy(x + 1, y);
-        incrementEnergy(x - 1, y + 1);
-        incrementEnergy(x, y + 1);
-        incrementEnergy(x + 1, y + 1);
+    private void propagateFlash(Deque<Coordinates> octopiToVisit, int y, int x) {
+        incrementEnergy(octopiToVisit, x - 1, y - 1);
+        incrementEnergy(octopiToVisit, x, y - 1);
+        incrementEnergy(octopiToVisit, x + 1, y - 1);
+        incrementEnergy(octopiToVisit, x - 1, y);
+        incrementEnergy(octopiToVisit, x + 1, y);
+        incrementEnergy(octopiToVisit, x - 1, y + 1);
+        incrementEnergy(octopiToVisit, x, y + 1);
+        incrementEnergy(octopiToVisit, x + 1, y + 1);
     }
 }
