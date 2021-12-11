@@ -27,21 +27,9 @@ public class Grid {
         }
     }
 
-    private boolean inBounds(int x, int y) {
-        boolean outOfBounds = y < 0 || y >= energyLevels.length || x < 0 || x >= energyLevels[y].length;
-        return !outOfBounds;
-    }
-
     public Result simulateStep() {
-        boolean[][] toFlash = new boolean[GRID_Y_SIZE][GRID_X_SIZE];
         boolean[][] flashed = new boolean[GRID_Y_SIZE][GRID_X_SIZE];
-        // Increment energy levels of every octopus
-        for (int y = 0; y < GRID_Y_SIZE; y++) {
-            for (int x = 0; x < GRID_X_SIZE; x++) {
-                energyLevels[y][x]++;
-                toFlash[y][x] = energyLevels[y][x] > 9;
-            }
-        }
+        boolean[][] toFlash = incrementEnergyLevels();
         // While there has been a flash propagating through the grid, check there aren't any more flashes to propagate.
         boolean changed;
         do {
@@ -62,7 +50,24 @@ public class Grid {
                 }
             }
         } while (changed);
+        resetEnergyLevelsForFlashedOctopi(flashed);
+        long flashCount = Arrays.stream(flashed).map(Booleans::asList).flatMap(Collection::stream).filter(a -> a).count();
+        return new Result(flashCount, flashCount == GRID_X_SIZE * GRID_Y_SIZE);
+    }
 
+    private boolean[][] incrementEnergyLevels() {
+        boolean[][] toFlash = new boolean[GRID_Y_SIZE][GRID_X_SIZE];
+        // Increment energy levels of every octopus
+        for (int y = 0; y < GRID_Y_SIZE; y++) {
+            for (int x = 0; x < GRID_X_SIZE; x++) {
+                energyLevels[y][x]++;
+                toFlash[y][x] = energyLevels[y][x] > 9;
+            }
+        }
+        return toFlash;
+    }
+
+    private void resetEnergyLevelsForFlashedOctopi(boolean[][] flashed) {
         // All flashed octopuses have their energy levels reset to 0
         for (int y = 0; y < GRID_Y_SIZE; y++) {
             for (int x = 0; x < GRID_X_SIZE; x++) {
@@ -71,9 +76,11 @@ public class Grid {
                 }
             }
         }
+    }
 
-        long flashCount = Arrays.stream(flashed).map(Booleans::asList).flatMap(Collection::stream).filter(a -> a).count();
-        return new Result(flashCount, flashCount == GRID_X_SIZE * GRID_Y_SIZE);
+    private boolean inBounds(int x, int y) {
+        boolean outOfBounds = y < 0 || y >= energyLevels.length || x < 0 || x >= energyLevels[y].length;
+        return !outOfBounds;
     }
 
     private boolean isChanged(boolean[][] toFlash, int x, int y) {
