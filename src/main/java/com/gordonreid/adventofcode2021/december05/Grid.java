@@ -1,7 +1,6 @@
 package com.gordonreid.adventofcode2021.december05;
 
 import com.google.common.collect.Streams;
-import com.gordonreid.adventofcode2021.helpers.GridHelpers;
 import com.gordonreid.adventofcode2021.helpers.GridHelpers.Coordinates;
 import lombok.Getter;
 
