@@ -21,14 +21,6 @@ public record HydrothermalVent(int startX, int startY, int endX, int endY) {
         return startX == endX;
     }
 
-    public int lowestXValue() {
-        return Math.min(startX, endX);
-    }
-
-    public int lowestYValue() {
-        return Math.min(startY, endY);
-    }
-
     public int highestXValue() {
         return Math.max(startX, endX);
     }

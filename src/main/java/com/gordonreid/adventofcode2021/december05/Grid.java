@@ -1,6 +1,7 @@
 package com.gordonreid.adventofcode2021.december05;
 
 import com.google.common.collect.Streams;
+import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -11,10 +12,21 @@ import java.util.stream.Stream;
 @SuppressWarnings("unused") // IntelliJ marks this as unused sometimes then realises it is used. Suppressing.
 public record Grid(Cell[][] cells) {
 
+    @Getter
+    public static class Cell {
+        private int count = 0;
+
+        public void addVent() {
+            count++;
+        }
+    }
+
     private record Pair(int x, int y) {
     }
 
-    public static Grid create(int xCount, int yCount) {
+    public static Grid create(List<HydrothermalVent> hydrothermalVents) {
+        int xCount = 1 + hydrothermalVents.stream().map(HydrothermalVent::highestXValue).max(Integer::compareTo).get();
+        int yCount = 1 + hydrothermalVents.stream().map(HydrothermalVent::highestYValue).max(Integer::compareTo).get();
         Cell[][] cells = new Cell[yCount][xCount];
         for (int x = 0; x < xCount; x++) {
             for (int y = 0; y < yCount; y++) {
@@ -52,7 +64,6 @@ public record Grid(Cell[][] cells) {
         }
     }
 
-
     public List<Cell> cellsWithMultipleVents() {
         return Arrays.stream(cells)
                 .flatMap(Arrays::stream)
@@ -60,19 +71,4 @@ public record Grid(Cell[][] cells) {
                 .toList();
     }
 
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        for (Cell[] row : cells) {
-            for (Cell cell : row) {
-                int count = cell.getCount();
-                if (count == 0) {
-                    builder.append(".");
-                } else {
-                    builder.append(count);
-                }
-            }
-            builder.append("\n");
-        }
-        return builder.toString();
-    }
 }
