@@ -28,24 +28,18 @@ public class Grid {
     }
 
     public Result simulateStep() {
+        incrementEnergyLevels();
         boolean[][] flashed = new boolean[GRID_Y_SIZE][GRID_X_SIZE];
-        boolean[][] toFlash = incrementEnergyLevels();
         // While there has been a flash propagating through the grid, check there aren't any more flashes to propagate.
         boolean changed;
         do {
             changed = false;
             for (int y = 0; y < GRID_Y_SIZE; y++) {
                 for (int x = 0; x < GRID_X_SIZE; x++) {
-                    if (toFlash[y][x] && !flashed[y][x]) {
+                    if (energyLevels[y][x] > 9 && !flashed[y][x]) {
                         flashed[y][x] = true;
-                        changed |= isChanged(toFlash, x - 1, y - 1);
-                        changed |= isChanged(toFlash, x, y - 1);
-                        changed |= isChanged(toFlash, x + 1, y - 1);
-                        changed |= isChanged(toFlash, x - 1, y);
-                        changed |= isChanged(toFlash, x + 1, y);
-                        changed |= isChanged(toFlash, x - 1, y + 1);
-                        changed |= isChanged(toFlash, x, y + 1);
-                        changed |= isChanged(toFlash, x + 1, y + 1);
+                        changed = true;
+                        propagateFlash(y, x);
                     }
                 }
             }
@@ -55,16 +49,12 @@ public class Grid {
         return new Result(flashCount, flashCount == GRID_X_SIZE * GRID_Y_SIZE);
     }
 
-    private boolean[][] incrementEnergyLevels() {
-        boolean[][] toFlash = new boolean[GRID_Y_SIZE][GRID_X_SIZE];
-        // Increment energy levels of every octopus
+    private void incrementEnergyLevels() {
         for (int y = 0; y < GRID_Y_SIZE; y++) {
             for (int x = 0; x < GRID_X_SIZE; x++) {
-                energyLevels[y][x]++;
-                toFlash[y][x] = energyLevels[y][x] > 9;
+                incrementEnergy(x, y);
             }
         }
-        return toFlash;
     }
 
     private void resetEnergyLevelsForFlashedOctopi(boolean[][] flashed) {
@@ -83,14 +73,20 @@ public class Grid {
         return !outOfBounds;
     }
 
-    private boolean isChanged(boolean[][] toFlash, int x, int y) {
-        if (inBounds(x, y) && !toFlash[y][x]) {
+    private void incrementEnergy(int x, int y) {
+        if (inBounds(x, y)) {
             energyLevels[y][x]++;
-            if (energyLevels[y][x] > 9) {
-                toFlash[y][x] = true;
-                return true;
-            }
         }
-        return false;
+    }
+
+    private void propagateFlash(int y, int x) {
+        incrementEnergy(x - 1, y - 1);
+        incrementEnergy(x, y - 1);
+        incrementEnergy(x + 1, y - 1);
+        incrementEnergy(x - 1, y);
+        incrementEnergy(x + 1, y);
+        incrementEnergy(x - 1, y + 1);
+        incrementEnergy(x, y + 1);
+        incrementEnergy(x + 1, y + 1);
     }
 }
