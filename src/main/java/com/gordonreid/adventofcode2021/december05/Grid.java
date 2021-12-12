@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-@SuppressWarnings("unused") // IntelliJ marks this as unused sometimes then realises it is used. Suppressing.
 public record Grid(Cell[][] cells) {
 
     @Getter

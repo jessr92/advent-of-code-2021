@@ -1,6 +1,5 @@
 package com.gordonreid.adventofcode2021.december05;
 
-@SuppressWarnings("unused") // IntelliJ marks this as unused sometimes then realises it is used. Suppressing.
 public record HydrothermalVent(int startX, int startY, int endX, int endY) {
 
     public static HydrothermalVent create(String input) {

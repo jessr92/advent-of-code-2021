@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@SuppressWarnings("unused") // IntelliJ marks this as unused sometimes then realises it is used. Suppressing.
 public record BingoGame(List<Integer> pickedNumbers, List<BingoBoard> bingoBoards) {
 
     public static BingoGame create(List<String> input) {
