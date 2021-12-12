@@ -13,22 +13,10 @@ public class Part1 {
         public void move(String moveString) {
             Move move = Move.parse(moveString);
             switch (move.moveType()) {
-                case forward -> travelForwards(move.amount());
-                case down -> descend(move.amount());
-                case up -> ascend(move.amount());
+                case forward -> horizontal += move.amount();
+                case down -> depth += move.amount();
+                case up -> depth -= move.amount();
             }
-        }
-
-        public void ascend(int up) {
-            depth -= up;
-        }
-
-        public void descend(int down) {
-            depth += down;
-        }
-
-        public void travelForwards(int forward) {
-            horizontal += forward;
         }
 
         public int locationValue() {
@@ -36,9 +24,9 @@ public class Part1 {
         }
     }
 
-    public static int run(List<String> exampleInput) {
+    public static int run(List<String> input) {
         Location location = new Location();
-        exampleInput.forEach(location::move);
+        input.forEach(location::move);
         return location.locationValue();
     }
 }
