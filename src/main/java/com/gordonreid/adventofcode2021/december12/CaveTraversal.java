@@ -1,8 +1,7 @@
 package com.gordonreid.adventofcode2021.december12;
 
-import com.google.common.graph.Graph;
-import com.google.common.graph.GraphBuilder;
-import com.google.common.graph.MutableGraph;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import lombok.experimental.UtilityClass;
 
 import java.util.HashSet;
@@ -10,14 +9,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-@SuppressWarnings("UnstableApiUsage")
 @UtilityClass
 public class CaveTraversal {
 
     public static final String START = "start";
     public static final String END = "end";
 
-    public static long pathCount(Graph<String> caveGraph, String cave, Set<String> visited, boolean canRevisitSmallCaves) {
+    public static long pathCount(Multimap<String, String> caveGraph, String cave, Set<String> visited, boolean canRevisitSmallCaves) {
         if (cave.equals(END)) {
             return 1;
         }
@@ -33,7 +31,7 @@ public class CaveTraversal {
             visitedCopy.add(cave);
         }
         long paths = 0;
-        for (String adjacentCave : caveGraph.adjacentNodes(cave)) {
+        for (String adjacentCave : caveGraph.get(cave)) {
             paths += pathCount(caveGraph, adjacentCave, visitedCopy, canRevisitSmallCaves);
         }
         return paths;
@@ -43,12 +41,12 @@ public class CaveTraversal {
         return cave.equals(cave.toLowerCase(Locale.ROOT));
     }
 
-    static Graph<String> createGraph(List<String> input) {
-        MutableGraph<String> caveGraph = GraphBuilder.undirected().build();
-        for (String line : input) {
-            String[] caves = line.split("-");
-            caveGraph.putEdge(caves[0], caves[1]);
-        }
+    static Multimap<String, String> createGraph(List<String> input) {
+        Multimap<String, String> caveGraph = HashMultimap.create();
+        input.stream().map(line -> line.split("-")).forEach(caves -> {
+            caveGraph.put(caves[0], caves[1]);
+            caveGraph.put(caves[1], caves[0]);
+        });
         return caveGraph;
     }
 }
