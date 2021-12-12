@@ -10,6 +10,6 @@ public class Part1 {
 
     public static long run(List<String> input) {
         Graph<String> caveGraph = CaveTraversal.createGraph(input);
-        return CaveTraversal.paths(caveGraph, CaveTraversal.START, new HashSet<>());
+        return CaveTraversal.pathCount(caveGraph, CaveTraversal.START, new HashSet<>(), false);
     }
 }
