@@ -29,7 +29,7 @@ public class CaveTraversal {
             }
         }
         Set<String> visitedCopy = new HashSet<>(visited);
-        if (isLowercase(cave)) {
+        if (isSmallCave(cave)) {
             visitedCopy.add(cave);
         }
         long paths = 0;
@@ -39,7 +39,7 @@ public class CaveTraversal {
         return paths;
     }
 
-    private static boolean isLowercase(String cave) {
+    private static boolean isSmallCave(String cave) {
         return cave.equals(cave.toLowerCase(Locale.ROOT));
     }
 
