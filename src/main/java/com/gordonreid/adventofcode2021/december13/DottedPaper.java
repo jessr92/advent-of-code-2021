@@ -17,8 +17,6 @@ public class DottedPaper {
         this.instructions = new ArrayList<>();
         List<Coordinates> dots = new ArrayList<>();
         boolean blankLineDetected = false;
-        int xSize = 0;
-        int ySize = 0;
         for (String line : input) {
             if (line.isBlank()) {
                 blankLineDetected = true;
@@ -28,14 +26,14 @@ public class DottedPaper {
                 int x = Integer.parseInt(coordinateString[0]);
                 int y = Integer.parseInt(coordinateString[1]);
                 dots.add(new Coordinates(x, y));
-                xSize = Math.max(xSize, x + 1);
-                ySize = Math.max(ySize, y + 1);
             } else {
                 // The lines after the blank line are fold instructions. We only need to know the axis the fold is
                 // along because all folds are folds in half.
                 instructions.add(line.split(" ")[2].split("=")[0]);
             }
         }
+        int xSize = 1 + dots.stream().map(Coordinates::x).max(Integer::compare).orElse(0);
+        int ySize = 1 + dots.stream().map(Coordinates::y).max(Integer::compare).orElse(0);
         this.dottedPaper = new boolean[ySize][xSize];
         dots.forEach(dot -> this.dottedPaper[dot.y()][dot.x()] = true);
     }
