@@ -1,15 +1,12 @@
 package com.gordonreid.adventofcode2021.december14;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.LongSummaryStatistics;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Polymer {
 
     private Map<String, Long> polymer;
-    private final Map<String, Character> insertionRules;
+    private final Map<String, String[]> insertionRules;
 
     public Polymer(List<String> input) {
         this.polymer = new HashMap<>();
@@ -25,7 +22,13 @@ public class Polymer {
         this.insertionRules = new HashMap<>();
         for (int i = 2; i < input.size(); i++) {
             String[] insertionRuleArray = input.get(i).split(" -> ");
-            this.insertionRules.put(insertionRuleArray[0], insertionRuleArray[1].charAt(0));
+            String originalPortion = insertionRuleArray[0];
+            char characterToInsert = insertionRuleArray[1].charAt(0);
+            String[] resultOfInsertion = new String[]{
+                    originalPortion.substring(0, 1) + characterToInsert,
+                    characterToInsert + originalPortion.substring(1, 2)
+            };
+            this.insertionRules.put(originalPortion, resultOfInsertion);
         }
     }
 
@@ -50,13 +53,10 @@ public class Polymer {
                 // For each entry in the polymer that has an insertion rule, we need to create the new portions created
                 // from that insertion rule. Each new portion has the same number of additional occurrences as the original
                 // portion.
-                // e.g. portion = AB with 10 occurrences. insertion rule is AB -> C
-                // result - AC and CB each have 10 occurrences added to new polymer
-                char characterToInsert = insertionRules.get(portion);
-                String leftPortion = portion.substring(0, 1) + characterToInsert;
-                updatedPolymer.merge(leftPortion, occurrences, Long::sum);
-                String rightPortion = characterToInsert + portion.substring(1, 2);
-                updatedPolymer.merge(rightPortion, occurrences, Long::sum);
+                // e.g. portion = AB with 10 occurrences. insertion rule is AB -> C (stored as AB -> {AC, CB})
+                // Action to take - AC and CB each have 10 occurrences added to new polymer
+                Arrays.stream(insertionRules.get(portion))
+                        .forEach(portionToInsert -> updatedPolymer.merge(portionToInsert, occurrences, Long::sum));
             } else {
                 // If the entry doesn't have an insertion rule, we add the entry to the updated polymer as-is.
                 // An entry may not have an insertion rule in two case:
