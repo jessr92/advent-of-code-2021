@@ -1,8 +1,8 @@
 package com.gordonreid.adventofcode2021.december14;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.LongSummaryStatistics;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -32,14 +32,13 @@ public class Polymer {
     public long polymerValue() {
         // For each entry, we only need the first character when counting occurrences. The second character will appear
         // in a subsequent entry as the first character of another pair (or on its own, if it's the end of the polymer).
-        Collection<Long> characterOccurrences = polymer.entrySet().stream()
+        LongSummaryStatistics longSummaryStatistics = polymer.entrySet().stream()
                 .map(entry -> Map.entry(entry.getKey().charAt(0), entry.getValue()))
-                .collect(Collectors.groupingBy(Map.Entry::getKey,
-                        Collectors.summingLong(Map.Entry::getValue)))
-                .values();
-        long mostCommonOccurrence = characterOccurrences.stream().max(Long::compareTo).orElse(0L);
-        long leastCommonOccurrence = characterOccurrences.stream().min(Long::compareTo).orElse(0L);
-        return mostCommonOccurrence - leastCommonOccurrence;
+                .collect(Collectors.groupingBy(Map.Entry::getKey, Collectors.summingLong(Map.Entry::getValue)))
+                .values()
+                .stream()
+                .collect(Collectors.summarizingLong(Long::longValue));
+        return longSummaryStatistics.getMax() - longSummaryStatistics.getMin();
     }
 
     public void step() {
