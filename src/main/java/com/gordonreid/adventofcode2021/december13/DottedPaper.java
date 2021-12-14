@@ -81,7 +81,7 @@ public class DottedPaper {
         StringBuilder builder = new StringBuilder();
         for (boolean[] dotRow : dottedPaper) {
             for (boolean dot : dotRow) {
-                builder.append(dot ? "#" : " ");
+                builder.append(dot ? "\u2588" : " ");
             }
             builder.append('\n');
         }
