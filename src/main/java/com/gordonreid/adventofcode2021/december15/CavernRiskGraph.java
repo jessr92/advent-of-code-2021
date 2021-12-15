@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class CavernRiskGraph {
@@ -58,11 +57,9 @@ public class CavernRiskGraph {
 
     public static Square[][] readCaveMap(List<String> input) {
         Square[][] riskMap = new Square[input.size()][input.get(0).length()];
-        for (int y = 0; y < input.size(); y++) {
-            String line = input.get(y);
-            for (int x = 0; x < line.length(); x++) {
-                Square square = new Square(x, y, Integer.parseInt(line.substring(x, x + 1)));
-                riskMap[y][x] = square;
+        for (int y = 0; y < riskMap.length; y++) {
+            for (int x = 0; x < riskMap[0].length; x++) {
+                riskMap[y][x] = new Square(x, y, input.get(y).charAt(x) - '0');
             }
         }
         return riskMap;
@@ -100,7 +97,7 @@ public class CavernRiskGraph {
                 .stream()
                 .filter(this::inBounds)
                 .map(coordinates -> riskMap[coordinates.y()][coordinates.x()])
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private boolean inBounds(Coordinates coordinates) {
