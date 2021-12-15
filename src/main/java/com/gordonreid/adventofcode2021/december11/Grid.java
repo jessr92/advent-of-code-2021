@@ -19,9 +19,7 @@ public class Grid {
         this.energyLevels = new int[GRID_Y_SIZE][GRID_X_SIZE];
         for (int y = 0; y < GRID_Y_SIZE; y++) {
             for (int x = 0; x < GRID_X_SIZE; x++) {
-                char character = input.get(y).charAt(x);
-                int initialEnergyLevel = Integer.parseInt(String.valueOf(character));
-                this.energyLevels[y][x] = initialEnergyLevel;
+                this.energyLevels[y][x] = input.get(y).charAt(x) - '0';
             }
         }
     }
