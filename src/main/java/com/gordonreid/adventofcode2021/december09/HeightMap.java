@@ -17,11 +17,9 @@ public class HeightMap {
         this.xAxisSize = input.get(0).length();
         this.heightMap = new int[yAxisSize][xAxisSize];
         this.visited = new boolean[yAxisSize][xAxisSize];
-
         for (int y = 0; y < yAxisSize; y++) {
-            char[] line = input.get(y).toCharArray();
             for (int x = 0; x < xAxisSize; x++) {
-                heightMap[y][x] = Integer.parseInt(String.valueOf(line[x]));
+                heightMap[y][x] = input.get(y).charAt(x) - '0';
             }
         }
     }
