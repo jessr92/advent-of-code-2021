@@ -30,32 +30,32 @@ public class CavernRiskGraph {
         }
     }
 
-    public CavernRiskGraph(List<String> input) {
-        this(input, true);
-    }
-
-    public CavernRiskGraph(List<String> input, boolean fullMap) {
-        this.riskMap = fullMap ? readCaveMap(input) : copyFiveTimesInEachDirection(readCaveMap(input));
+    public CavernRiskGraph(List<String> input, int copies) {
+        this.riskMap = readCaveMap(input, copies);
         this.riskMap[0][0].setRiskLevelToSource(0L);
     }
 
-    private static Square[][] copyFiveTimesInEachDirection(Square[][] givenCaveMap) {
-        Square[][] fullCaveMap = new Square[givenCaveMap.length * 5][givenCaveMap[0].length * 5];
-        for (int y = 0; y < fullCaveMap.length; y++) {
-            for (int x = 0; x < fullCaveMap[0].length; x++) {
-                int additionalRiskDueToX = x / givenCaveMap[0].length;
-                int additionalRiskDueToY = y / givenCaveMap.length;
-                int xForGivenSquare = x % givenCaveMap[0].length;
-                int yForGivenSquare = y % givenCaveMap.length;
-                Square givenSquare = givenCaveMap[yForGivenSquare][xForGivenSquare];
-                int riskLevel = (givenSquare.getRiskLevel() + additionalRiskDueToX + additionalRiskDueToY - 1) % 9 + 1;
-                fullCaveMap[y][x] = new Square(x, y, riskLevel);
+    private static Square[][] readCaveMap(List<String> input, int copies) {
+        Square[][] givenCaveMap = readGivenCaveMap(input);
+        int originalXLength = givenCaveMap[0].length;
+        int originalYLength = givenCaveMap.length;
+        Square[][] fullCaveMap = new Square[originalYLength * copies][originalXLength * copies];
+        for (int y = 0; y < originalYLength; y++) {
+            for (int x = 0; x < originalXLength; x++) {
+                for (int yMultiple = 0; yMultiple < copies; yMultiple++) {
+                    for (int xMultiple = 0; xMultiple < copies; xMultiple++) {
+                        int riskLevel = (givenCaveMap[y][x].getRiskLevel() + xMultiple + yMultiple - 1) % 9 + 1;
+                        int fullMapX = x + (originalYLength * xMultiple);
+                        int fullMapY = y + (originalXLength * yMultiple);
+                        fullCaveMap[fullMapY][fullMapX] = new Square(fullMapX, fullMapY, riskLevel);
+                    }
+                }
             }
         }
         return fullCaveMap;
     }
 
-    public static Square[][] readCaveMap(List<String> input) {
+    public static Square[][] readGivenCaveMap(List<String> input) {
         Square[][] riskMap = new Square[input.size()][input.get(0).length()];
         for (int y = 0; y < riskMap.length; y++) {
             for (int x = 0; x < riskMap[0].length; x++) {
