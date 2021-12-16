@@ -1,5 +1,7 @@
 package com.gordonreid.adventofcode2021.december03;
 
+import com.gordonreid.adventofcode2021.helpers.BinaryHelpers;
+
 import java.util.List;
 import java.util.stream.Collectors;
 

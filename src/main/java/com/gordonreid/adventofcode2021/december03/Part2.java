@@ -1,6 +1,7 @@
 package com.gordonreid.adventofcode2021.december03;
 
 import com.google.common.collect.Iterables;
+import com.gordonreid.adventofcode2021.helpers.BinaryHelpers;
 
 import java.util.ArrayList;
 import java.util.List;

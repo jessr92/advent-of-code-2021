@@ -1,4 +1,4 @@
-package com.gordonreid.adventofcode2021.december03;
+package com.gordonreid.adventofcode2021.helpers;
 
 import lombok.experimental.UtilityClass;
 
