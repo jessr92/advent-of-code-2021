@@ -14,4 +14,12 @@ public final class BinaryHelpers {
                 .map(i -> (int) Math.pow(2, i))
                 .sum();
     }
+
+    public static long binaryToLong(String binaryString) {
+        String reversedString = new StringBuffer(binaryString).reverse().toString();
+        return IntStream.range(0, reversedString.length())
+                .filter(i -> reversedString.charAt(i) == '1')
+                .mapToLong(i -> (long) Math.pow(2, i))
+                .sum();
+    }
 }
