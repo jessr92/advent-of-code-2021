@@ -89,6 +89,9 @@ public class PacketReader {
     private record LiteralParseResult(long value, int positionReadTo) {
     }
 
+    private record SubPacketParseResult(List<Packet> subPackets, int positionReadTo) {
+    }
+
     public static Packet read(String packetHex) {
         return parse(HexHelpers.toBinaryString(packetHex)).packet();
     }
@@ -100,34 +103,52 @@ public class PacketReader {
         int typeId = BinaryHelpers.binaryToInt(packetBinary.substring(position, position + PACKAGE_TYPE_BIT_LENGTH));
         position += PACKAGE_TYPE_BIT_LENGTH;
         if (typeId == LITERAL_PACKET_TYPE_ID) {
-            LiteralParseResult literalParseResult = parseLiteralValue(packetBinary.substring(position));
-            position += literalParseResult.positionReadTo();
-            return new PacketParseResult(new LiteralPacket(version, typeId, literalParseResult.value()), position);
+            return parseLiteralPacket(packetBinary, position, version, typeId);
         } else {
-            int lengthTypeId = BinaryHelpers.binaryToInt(packetBinary.substring(position, position + 1));
-            position++;
-            int lengthBinaryDigitCount = lengthTypeId == 0 ? 15 : 11;
-            int length = BinaryHelpers.binaryToInt(packetBinary.substring(position, position + lengthBinaryDigitCount));
-            position += lengthBinaryDigitCount;
-            List<Packet> subPackets = new ArrayList<>();
-            if (lengthTypeId == SUB_PACKET_LENGTH_TYPE) {
-                int packetEnd = position + length;
-                while (position < packetEnd) {
-                    String subPacket = packetBinary.substring(position);
-                    PacketParseResult packetParseResult = parse(subPacket);
-                    position += packetParseResult.positionReadTo();
-                    subPackets.add(packetParseResult.packet());
-                }
-            } else {
-                // length represents number of sub packets
-                for (int subPacket = 0; subPacket < length; subPacket++) {
-                    PacketParseResult packetParseResult = parse(packetBinary.substring(position));
-                    position += packetParseResult.positionReadTo();
-                    subPackets.add(packetParseResult.packet());
-                }
-            }
-            return new PacketParseResult(new OperatorPacket(version, typeId, lengthTypeId, length, subPackets), position);
+            return parseOperatorPacket(packetBinary, position, version, typeId);
         }
+    }
+
+    private static PacketParseResult parseLiteralPacket(String packetBinary, int position, int version, int typeId) {
+        LiteralParseResult literalParseResult = parseLiteralValue(packetBinary.substring(position));
+        LiteralPacket literalPacket = new LiteralPacket(version, typeId, literalParseResult.value());
+        position += literalParseResult.positionReadTo();
+        return new PacketParseResult(literalPacket, position);
+    }
+
+    private static PacketParseResult parseOperatorPacket(String packetBinary, int position, int version, int typeId) {
+        int lengthTypeId = BinaryHelpers.binaryToInt(packetBinary.substring(position, position + 1));
+        position++;
+        int lengthBinaryDigitCount = lengthTypeId == SUB_PACKET_LENGTH_TYPE ? 15 : 11;
+        int length = BinaryHelpers.binaryToInt(packetBinary.substring(position, position + lengthBinaryDigitCount));
+        position += lengthBinaryDigitCount;
+        String subPacketBinary = packetBinary.substring(position);
+        SubPacketParseResult subPacketParseResult = parseSubPackets(subPacketBinary, lengthTypeId, length);
+        OperatorPacket operatorPacket = new OperatorPacket(version, typeId, lengthTypeId, length, subPacketParseResult.subPackets());
+        position += subPacketParseResult.positionReadTo();
+        return new PacketParseResult(operatorPacket, position);
+    }
+
+    private static SubPacketParseResult parseSubPackets(String subPacketBinary, int lengthTypeId, int length) {
+        List<Packet> subPackets = new ArrayList<>();
+        int position = 0;
+        if (lengthTypeId == SUB_PACKET_LENGTH_TYPE) {
+            // Length represents the number of numbers of bits for all the sub packets
+            while (position < length) {
+                String subPacket = subPacketBinary.substring(position);
+                PacketParseResult packetParseResult = parse(subPacket);
+                position += packetParseResult.positionReadTo();
+                subPackets.add(packetParseResult.packet());
+            }
+        } else {
+            // length represents number of sub packets
+            for (int subPacket = 0; subPacket < length; subPacket++) {
+                PacketParseResult packetParseResult = parse(subPacketBinary.substring(position));
+                position += packetParseResult.positionReadTo();
+                subPackets.add(packetParseResult.packet());
+            }
+        }
+        return new SubPacketParseResult(subPackets, position);
     }
 
     // Literal binary is groups of 5 bits. The first says if there are subsequent groups (1) or not (0).
