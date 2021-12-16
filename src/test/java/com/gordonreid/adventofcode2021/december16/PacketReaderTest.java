@@ -1,9 +1,9 @@
 package com.gordonreid.adventofcode2021.december16;
 
 import com.google.common.collect.ImmutableList;
-import com.gordonreid.adventofcode2021.december16.PacketReader.LiteralPacket;
-import com.gordonreid.adventofcode2021.december16.PacketReader.OperatorPacket;
-import com.gordonreid.adventofcode2021.december16.PacketReader.Packet;
+import com.gordonreid.adventofcode2021.december16.Packets.LiteralPacket;
+import com.gordonreid.adventofcode2021.december16.Packets.OperatorPacket;
+import com.gordonreid.adventofcode2021.december16.Packets.Packet;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
