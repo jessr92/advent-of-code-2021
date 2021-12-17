@@ -75,3 +75,6 @@ jobs:
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
+
+    - name: Run tests with Maven
+      run: mvn -B test --file pom.xml
