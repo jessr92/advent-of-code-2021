@@ -1,7 +1,7 @@
 package com.gordonreid.adventofcode2021.december15;
 
 import com.google.common.collect.ImmutableList;
-import com.gordonreid.adventofcode2021.helpers.GridHelpers.Coordinates;
+import com.gordonreid.adventofcode2021.helpers.Coordinates;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

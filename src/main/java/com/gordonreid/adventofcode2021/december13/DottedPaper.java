@@ -1,7 +1,7 @@
 package com.gordonreid.adventofcode2021.december13;
 
 import com.google.common.primitives.Booleans;
-import com.gordonreid.adventofcode2021.helpers.GridHelpers.Coordinates;
+import com.gordonreid.adventofcode2021.helpers.Coordinates;
 
 import java.util.ArrayList;
 import java.util.Arrays;

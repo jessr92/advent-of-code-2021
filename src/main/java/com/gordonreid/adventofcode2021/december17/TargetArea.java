@@ -1,6 +1,6 @@
 package com.gordonreid.adventofcode2021.december17;
 
-import com.gordonreid.adventofcode2021.helpers.GridHelpers.Coordinates;
+import com.gordonreid.adventofcode2021.helpers.Coordinates;
 
 import java.util.Arrays;
 
