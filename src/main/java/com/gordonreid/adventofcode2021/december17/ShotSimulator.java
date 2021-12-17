@@ -9,7 +9,7 @@ public class ShotSimulator {
     public static ShotResult simulateShot(int xVelocity, int yVelocity, TargetArea targetArea) {
         Coordinates shotPosition = new Coordinates(0, 0);
         int maxHeight = 0;
-        while (shotPosition.x() < targetArea.end().x() && shotPosition.y() > targetArea.end().y()) {
+        while (shotPosition.x() <= targetArea.end().x() && shotPosition.y() >= targetArea.end().y()) {
             shotPosition = shotPosition.moveForward(xVelocity).moveUp(yVelocity);
             maxHeight = Math.max(maxHeight, shotPosition.y());
             // At each step, the x velocity trends to 0 and the y velocity drops by one
