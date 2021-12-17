@@ -11,7 +11,7 @@ public final class BinaryHelpers {
         String reversedString = new StringBuffer(binaryString).reverse().toString();
         return IntStream.range(0, reversedString.length())
                 .filter(i -> reversedString.charAt(i) == '1')
-                .map(i -> (int) Math.pow(2, i))
+                .map(i -> 1 << i)
                 .sum();
     }
 
@@ -19,7 +19,7 @@ public final class BinaryHelpers {
         String reversedString = new StringBuffer(binaryString).reverse().toString();
         return IntStream.range(0, reversedString.length())
                 .filter(i -> reversedString.charAt(i) == '1')
-                .mapToLong(i -> (long) Math.pow(2, i))
+                .mapToLong(i -> 1L << i)
                 .sum();
     }
 }
