@@ -1,7 +1,6 @@
 package com.gordonreid.adventofcode2021.december17;
 
 import com.gordonreid.adventofcode2021.december17.ShotSimulator.ShotResult;
-import com.gordonreid.adventofcode2021.december17.ShotSimulator.TargetArea;
 
 import java.util.List;
 
@@ -17,7 +16,7 @@ public class Part2 {
         int validVelocityCount = 0;
         for (int xVelocity = minXVelocity; xVelocity <= targetArea.end().x(); xVelocity++) {
             for (int yVelocity = targetArea.end().y(); yVelocity <= -targetArea.end().y(); yVelocity++) {
-                ShotResult shotResult = ShotSimulator.shotHitsTarget(xVelocity, yVelocity, targetArea);
+                ShotResult shotResult = ShotSimulator.simulateShot(xVelocity, yVelocity, targetArea);
                 if (shotResult.hit()) {
                     validVelocityCount++;
                 }
