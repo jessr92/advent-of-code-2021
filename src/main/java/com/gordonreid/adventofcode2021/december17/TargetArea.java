@@ -21,7 +21,7 @@ public record TargetArea(Coordinates start, Coordinates end) {
         return new TargetArea(targetAreaBegin, targetAreaEnd);
     }
 
-    int getMinXVelocity() {
+    public int getMinXVelocity() {
         // Based off of sum=1/2*n(n+1) where n = minimum x velocity and sum = x value where target area begins
         // This works because an initial x velocity of n will travel n, n-1, n-2, ..., 2, 1 spaces forwards
         // so the total distance travelled for a given starting velocity is the
@@ -36,5 +36,10 @@ public record TargetArea(Coordinates start, Coordinates end) {
         // We need to Math.ceil the value since if the min velocity is, say, 4.8 then the value should be 5 since
         // we can only have integer velocities.
         return (int) Math.ceil((Math.sqrt(1 + start().x() * 8) - 1) / 2);
+    }
+
+    public boolean hitBy(Coordinates shotPosition) {
+        return shotPosition.x() >= start().x() && shotPosition.x() <= end().x() &&
+                shotPosition.y() <= start().y() && shotPosition.y() >= end().y();
     }
 }

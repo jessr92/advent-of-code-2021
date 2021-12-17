@@ -15,16 +15,11 @@ public class ShotSimulator {
             // At each step, the x velocity trends to 0 and the y velocity drops by one
             xVelocity = Math.max(xVelocity - 1, 0);
             yVelocity--;
-            if (shotInTargetArea(targetArea, shotPosition)) {
+            if (targetArea.hitBy(shotPosition)) {
                 return new ShotResult(true, maxHeight);
             }
         }
         return new ShotResult(false, maxHeight);
-    }
-
-    private static boolean shotInTargetArea(TargetArea targetArea, Coordinates shotPosition) {
-        return shotPosition.x() >= targetArea.start().x() && shotPosition.x() <= targetArea.end().x() &&
-                shotPosition.y() <= targetArea.start().y() && shotPosition.y() >= targetArea.end().y();
     }
 
     public record ShotResult(boolean hit, int maxHeight) {
